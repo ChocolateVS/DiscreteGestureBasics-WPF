@@ -1,0 +1,158 @@
+﻿<Window x:Name="Hey_You_TWO_" 
+        x:Class="Microsoft.Samples.Kinect.DiscreteGestureBasics.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Microsoft.Samples.Kinect.DiscreteGestureBasics"
+        Title="Hey You Too"
+        Closing="MainWindow_Closing" WindowStartupLocation="CenterScreen" WindowState="Maximized" Background="Black">
+    <Window.Resources>
+        <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e" />
+        <SolidColorBrush x:Key="KinectPurpleBrush" Color="#ff52318f" />
+        <SolidColorBrush x:Key="KinectBlueBrush" Color="#ff00BCF2" />
+
+        <DataTemplate DataType="{x:Type local:GestureResultView}">
+            <Grid Width="Auto" Margin="5" Background="{Binding BodyColor}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock HorizontalAlignment="Stretch" Text="{Binding BodyIndex, StringFormat='Body Index: {0}'}" FontSize="14" FontFamily="Segoe UI" FontWeight="SemiBold" Margin="5"/>
+                <Image Source="{Binding ImageSource}" Stretch="Uniform" Grid.Row="1" Margin="5"/>
+                <TextBlock Text="{Binding Detected, StringFormat='Seated: {0}'}" FontSize="18" FontFamily="Segoe UI" FontWeight="SemiBold" Grid.Row="2" Margin="5 5 0 0"/>
+                <TextBlock Text="{Binding Confidence, StringFormat='Confidence: {0}'}" FontSize="18" FontFamily="Segoe UI" FontWeight="SemiBold" Grid.Row="3" Margin="5 0 0 0"/>
+            </Grid>
+        </DataTemplate>
+
+    </Window.Resources>
+    <Grid>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="35" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="VerticalAlignment" Value="Top" />
+                        <Setter Property="BorderThickness" Value="0,5,0,0" />
+                        <Setter Property="BorderBrush" Value="white" />
+                        <Setter Property="Margin" Value="0,-2,0,0" />
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="10,-15,10,0" />
+                        <Setter Property="FontSize" Value="30" />
+                    </Style>
+                </Grid.Resources>
+                <Border Grid.Column="0" BorderBrush="#FFBE0403" Margin="10,20,10,0" />
+                <Image  Grid.Column="1" x:Name="logoImage" HorizontalAlignment="Center" Source="Images/logo_long_trans.png" Height="44" Width="100" VerticalAlignment="Top" Margin="0,10,0,0"/>
+                <Border Grid.Column="2" BorderBrush="#FFBE0403" Margin="10,20,10,0" />
+            </Grid>
+            <Border Name="bord" BorderBrush="#FFBE0403" BorderThickness="5,0,5,5" Margin="10,20,10,13">
+                <Grid Name ="menuBorder">
+                    <Grid Name="welcomeMsg" Visibility="Hidden">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.1*"/>
+                            <RowDefinition Height="0.1*"/>
+                            <RowDefinition Height="0.3*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="HEY YOU! please raise a hand to interact" Foreground="White" FontSize="25"></TextBlock>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top"  Text="Please stand behind the line and keep your hands slightly wider than your shoulder width apart" Foreground="White" FontSize="25"></TextBlock>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Image Name="man_img"></Image>
+                        </Grid>
+
+                    </Grid>
+                    <Grid Name="Menu" Visibility="Hidden">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="0.5*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Name="map" Grid.Column="0" Grid.Row="1" Margin="5">
+                            <Image Source="images/map.png" Margin="35"></Image>
+                            <TextBlock Name="map_text" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" FontSize="20" Text="Map"></TextBlock>
+                        </Grid>
+                        <Grid Name="cal" Grid.Column="1" Grid.Row="1" Margin="5">
+                            <Image Source="images/calendar.png" Margin="35"></Image>
+                            <TextBlock Name="cal_text" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" FontSize="20" Text="Calendar"></TextBlock>
+                        </Grid>
+                        <Grid Name="not" Grid.Column="2" Grid.Row="1" Margin="5">
+                            <Image Source="images/notices.png" Margin="35"></Image>
+                            <TextBlock Name="not_text" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" FontSize="20" Text="Notices"></TextBlock>
+                        </Grid>
+                    </Grid>
+                    <Grid Name="map_view" Visibility="Hidden">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+
+                        </Grid>
+                        <Grid Name="room_l" Grid.Row="1" Grid.Column="0" Margin="80,0,0,0">
+                            <Image Name="room_marker_img" Margin="0,0,0,30" HorizontalAlignment="Center" VerticalAlignment="Center" Source="images/room_marker-active.png"/>
+                            <TextBlock Name="rm_text" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" FontSize="20" Text="Say 'Find Room Location'"></TextBlock>
+                        </Grid>
+                        <Grid Name="paper_l" Grid.Row="1" Grid.Column="1" Margin="0,0,80,0">
+                            <Image Name="paper_marker_img" Margin="0,0,0,30" HorizontalAlignment="Center" VerticalAlignment="Center" Source="images/paper_marker-active.png"/>
+                            <TextBlock Name="pm_text" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" FontSize="20" Text="Say 'Find Paper Location'"></TextBlock>
+                        </Grid>
+                    </Grid>
+                    <Grid Name="l_view" Visibility="Hidden" Panel.ZIndex="0">
+
+                    </Grid>
+                    <Grid Name="cal_view">
+
+                    </Grid>
+                    <Grid Name="not_view">
+                        <WebBrowser x:Name="webBrowser" Source="https://events.waikato.ac.nz/events/" Width="900" Height="600" Panel.ZIndex="0" Visibility="Hidden"/>
+                    </Grid>
+                    <Grid Name="text" Grid.Column="1" Grid.Row="0" Margin="5">
+                        <Grid Margin="-120,0,-120,0" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.2*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="0.9*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <TextBlock Name="message" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" Text="Use either hand to hover over an item, make a fist to select!" Margin="-123,0,-123,0"></TextBlock>
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <TextBlock Name="voice_off_text" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Visible" Foreground="White" Text="Please active voice to use voice commands"></TextBlock>
+                                <TextBlock Name="voice_on_text" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" Foreground="White" Text="Listening... You could say 'How do I get to L.G.02', for directions"></TextBlock>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid Name="exit" Visibility="Hidden" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                        <TextBlock Height="160"  Name="exit_text" Text="EXIT" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="120"></TextBlock>
+                    </Grid>
+                    <Grid Name="voice" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5,0,0,5" Height="250" Width="250">
+                        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="voice_img" Source="images/voice_off.png" Width="250" Height="250"/>
+                        <TextBlock Name="voice_txt" Text="Voice Disabled" Foreground="White" Visibility="Hidden"></TextBlock>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+        <Viewbox x:Name="kinectBodyViewbox" VerticalAlignment="Bottom" Height="200" Panel.ZIndex="1000" MinWidth="100" MinHeight="100" Cursor="None" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Right" Width="200" Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="20">
+            <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
+        </Viewbox>
+    </Grid>
+</Window>
